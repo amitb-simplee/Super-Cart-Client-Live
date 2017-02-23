@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 
 // Start listening
 server.listen(process.env.PORT || config.port);
-console.log(`Started on port ${config.port}`);
+console.log(`** Super Cart Client Live Started on port ${config.port} **`);
 
 // Setup socket.io
 socketIo.on('connection', socket => {

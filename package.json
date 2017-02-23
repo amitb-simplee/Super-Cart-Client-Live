@@ -1,9 +1,7 @@
 {
-  "name": "simple-chat-api",
+  "name": "super_cart_client_live",
   "version": "1.0.0",
-  "description": "A simple chat api for the coderfactory blog article",
   "main": "lib/app.js",
-  "author": "Paul Pagnan <paul@pagnan.com.au>",
   "scripts": {
     "start": "NODE_ENV=development node ./lib/app.js",
     "compile": "babel -d lib/ src/",
@@ -23,8 +21,6 @@
       "no-unused-vars": 1
     }
   },
-  "license": "MIT",
-  "repository": "paul-pagnan/simple-chat-api",
   "dependencies": {
     "babel-runtime": "^6.6.1",
     "cors": "^2.8.1",
