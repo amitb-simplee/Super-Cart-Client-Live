@@ -25,19 +25,25 @@ console.log(`** Super Cart Client Live Started on port ${config.port} **`);
 
 // Setup socket.io
 socketIo.on('connection', socket => {
-  const username = socket.handshake.query.username;
-  console.log(`${username} connected`);
+  socket.cart = socket.handshake.query.cart
 
-  socket.on('client:message', data => {
-    console.log(`${data.username}: ${data.message}`);
+  socket.join(socket.cart);
 
-    // message received from client, now broadcast it to everyone else
-    socket.broadcast.emit('server:message', data);
+  socket.broadcast.to(socket.cart).emit('server:message',socket.id);
+  
+  socket.on('client:item_update', data => {
+    var cart = data.cart;
+    console.log(`${socket.id} got update for cart: ${data.cart}`);
+
+    socket.broadcast.to(socket.cart).emit('server:cart_update',data);
+    
   });
 
-  socket.on('disconnect', () => {
-    console.log(`${username} disconnected`);
+  socket.on('disconnect', data => {
+    socket.leave(socket.cart);
+    console.log(`${socket.id} left cart: ${socket.cart}`);
   });
 });
+// Setup socket.io
 
 export default app;
