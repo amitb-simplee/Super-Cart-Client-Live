@@ -19,17 +19,25 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve('public/index.html'));
 });
 
+app.get('/update', function (req, res) {
+  res.send(req.params);
+})
+
 // Start listening
 server.listen(process.env.PORT || config.port);
 console.log(`** Super Cart Client Live Started on port ${config.port} **`);
 
 // Setup socket.io
 socketIo.on('connection', socket => {
-  socket.cart = socket.handshake.query.cart
+  
+  
+  if (socket.handshake.query.cart) {
+    socket.cart = socket.handshake.query.cart
+    socket.join(socket.cart);
 
-  socket.join(socket.cart);
+    socket.broadcast.to(socket.cart).emit('server:message',socket.id);   
+  }
 
-  socket.broadcast.to(socket.cart).emit('server:message',socket.id);
   
   socket.on('client:item_update', data => {
     var cart = data.cart;
@@ -39,9 +47,20 @@ socketIo.on('connection', socket => {
     
   });
 
+  socket.on('client:carts_update', data => {
+    var userId = data.userId;
+    console.log(`${socket.id} got update for carts from user: ${userId}`);
+
+    socket.broadcast.emit('server:carts_update',data);
+    
+  });
+
   socket.on('disconnect', data => {
-    socket.leave(socket.cart);
-    console.log(`${socket.id} left cart: ${socket.cart}`);
+    if (socket.cart) {
+      socket.leave(socket.cart);
+      console.log(`${socket.id} left cart: ${socket.cart}`);    
+    }
+
   });
 });
 // Setup socket.io
