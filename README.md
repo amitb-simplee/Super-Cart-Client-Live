@@ -1,5 +1,5 @@
-#Simple Chat API Live
-A simple node API for the live updates with sockets
+#Super Cart Client Live - NodeJs
+Super Cart NodeJs for live updates with sockets
 
 Start the API by running:
 ```
