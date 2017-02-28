@@ -1,5 +1,5 @@
-#Simple Chat API
-A simple chat API for the coderfactory blog article
+#Simple Chat API Live
+A simple node API for the live updates with sockets
 
 Start the API by running:
 ```
